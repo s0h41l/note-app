@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 const validate = require("./validate");
 
 const email = (check) => [
-  check("email").not().isEmpty().isEmail().withMessage("Invalid Email"),
+  check("email").isEmail().withMessage("Invalid Email"),
 ];
 
 const password = (check) => [

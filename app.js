@@ -4,6 +4,7 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/error-handler");
 const { sequelize } = require("./models");
 const userRoutes = require("./routes/userRoutes");
+const noteRoutes = require("./routes/noteRotes");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use("/user", userRoutes);
+app.use("/note", noteRoutes);
 
 // Global Error Handler
 app.use(errorHandler);

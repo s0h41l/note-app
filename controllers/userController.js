@@ -14,7 +14,7 @@ const register = async (req, res, next) => {
 
     if (isExist) {
       throw new httpErrors.Conflict({
-        message: `User already exists with email: ${email}`,
+        message: `User already exists with email ${email}`,
       });
     }
 
@@ -46,7 +46,7 @@ const login = async (req, res, next) => {
 
     if (!user) {
       throw new httpErrors.NotFound({
-        message: `No user exists against email: ${email}`,
+        message: `No user exists against email ${email}`,
       });
     }
 
@@ -61,7 +61,7 @@ const login = async (req, res, next) => {
         id: user.id,
         email: user.email,
       },
-      process.env.JWT_ACCESS_SECRET,
+      process.env.JWT_SECRET_KEY,
       {
         expiresIn: "60d",
         algorithm: "HS384",

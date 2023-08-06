@@ -7,9 +7,6 @@ module.exports = {
     database: process.env.DB_NAME || "node_db",
     host: process.env.DB_HOST || "127.0.0.1",
     dialect: "mysql",
-    define: {
-      timestamps: false,
-    },
   },
   test: {
     username: process.env.TEST_DB_USER || "root",
@@ -27,8 +24,5 @@ module.exports = {
     database: process.env.DB_NAME || "node_db",
     host: process.env.DB_HOST || "127.0.0.1",
     dialect: "mysql",
-    define: {
-      timestamps: false,
-    },
   },
 };
