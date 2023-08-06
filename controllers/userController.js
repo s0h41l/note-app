@@ -1,10 +1,16 @@
 const httpErrors = require("http-errors");
 const jwt = require("jsonwebtoken");
 const models = require("../models");
+const Logger = require("../utils/logger");
+
+const logger = new Logger();
+const context = "userController";
 
 const register = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
+    logger.log("info", `${context}@register`, JSON.stringify({ email }));
 
     const isExist = await models.User.findOne({
       where: {
@@ -28,6 +34,7 @@ const register = async (req, res, next) => {
       email: user.email,
     });
   } catch (error) {
+    logger.log("error", `${context}@register`, JSON.stringify(error));
     next(error);
   }
 };
@@ -35,6 +42,8 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
+    logger.log("info", `${context}@login`, JSON.stringify({ email }));
 
     const options = {
       where: {
@@ -72,6 +81,7 @@ const login = async (req, res, next) => {
       authToken,
     });
   } catch (error) {
+    logger.log("error", `${context}@login`, JSON.stringify(error));
     next(error);
   }
 };
