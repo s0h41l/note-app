@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const noteController = require("../controllers/noteController");
-const auth = require("../middlewares/auth");
+const { auth } = require("../middlewares/auth");
+const { cacheGetNote } = require("../middlewares/cache");
 const noteValidators = require("../validators/noteValidators");
 
 router.post(
@@ -17,7 +18,12 @@ router.put(
   noteController.updateNote
 );
 
-router.get("/:id", [auth], noteValidators.getNote(), noteController.getNote);
+router.get(
+  "/:id",
+  [auth, cacheGetNote],
+  noteValidators.getNote(),
+  noteController.getNote
+);
 
 router.get("/", [auth], noteValidators.getNotes(), noteController.getNotes);
 

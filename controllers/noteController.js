@@ -1,4 +1,5 @@
 const httpErrors = require("http-errors");
+const redisClient = require("../utils/redisClient");
 const models = require("../models");
 
 const createNote = async (req, res, next) => {
@@ -39,6 +40,8 @@ const updateNote = async (req, res, next) => {
     note.content = content;
 
     const updatedNote = await note.save();
+
+    await redisClient.set(`note-${userId}-${id}`, JSON.stringify(updatedNote)); // caching the note
 
     res.status(201).json(updatedNote);
   } catch (error) {
@@ -86,6 +89,8 @@ const getNote = async (req, res, next) => {
       throw new httpErrors.NotFound(`No note found against Id '${id}'`);
     }
 
+    await redisClient.set(`note-${userId}-${id}`, JSON.stringify(note)); // caching the note
+
     res.json(note);
   } catch (error) {
     next(error);
@@ -108,7 +113,10 @@ const deleteNote = async (req, res, next) => {
       throw new httpErrors.NotFound(`No note found against Id '${id}'`);
     }
 
-    await note.destroy();
+    await Promise.all([
+      note.destroy(),
+      redisClient.del(`note-${userId}-${id}`, JSON.stringify(note)), // deleting from cache
+    ]);
 
     res.json({ message: "Note deleted" });
   } catch (error) {

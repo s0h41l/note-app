@@ -1,7 +1,7 @@
 const httpErrors = require("http-errors");
 const jwt = require("jsonwebtoken");
 
-module.exports = (req, res, next) => {
+exports.auth = (req, res, next) => {
   try {
     const token = req.headers.authorization || "";
     const decodedToken = jwt.verify(
