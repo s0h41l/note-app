@@ -12,7 +12,7 @@ services:
     container_name: app-container
     env_file: ./.env
     ports:
-      - "8090:8090"
+      - "${PORT}:${PORT}"
     volumes:
       - .:/app # Map the current directory on the host to /app in the container
     depends_on:
@@ -41,7 +41,6 @@ services:
     container_name: mysql-container
     ports:
       - "${DB_PORT:-3306}:3306"
-
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_USER=${DB_USER}

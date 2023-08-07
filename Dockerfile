@@ -12,6 +12,3 @@ RUN npm install
 
 # Copy the rest of the application files
 COPY . .
-
-# Expose the application port (if applicable)
-EXPOSE 8090
