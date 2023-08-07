@@ -1,0 +1,57 @@
+version: "3"
+
+networks:
+  note_app_network:
+
+services:
+  # Node.js application
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: app-container
+    env_file: ./.env
+    ports:
+      - "8090:8090"
+    volumes:
+      - .:/app # Map the current directory on the host to /app in the container
+    depends_on:
+      - db
+      - redis
+    networks:
+      - note_app_network
+    command: >
+      sh -c "npm install && npx sequelize db:migrate && npm start"
+
+  # Redis service
+  redis:
+    image: redis
+    container_name: redis-container
+    env_file: ./.env
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - note_app_network
+
+  # MySQL service
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - note_app_network
+
+volumes:
+  redis_data:
+  mysql_data:
