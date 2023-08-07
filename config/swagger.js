@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8090", // Update with your API base URL
+        url: `http://localhost:${process.env.PORT}`,
       },
     ],
   },
