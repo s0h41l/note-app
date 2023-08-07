@@ -6,10 +6,15 @@ const { sequelize } = require("./models");
 const userRoutes = require("./routes/userRoutes");
 const noteRoutes = require("./routes/noteRotes");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger"); // Update with the correct path
+
 const app = express();
 
 // Enabling CORS
 app.use(cors());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 

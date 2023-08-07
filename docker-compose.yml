@@ -41,7 +41,7 @@ services:
     container_name: mysql-container
     ports:
       - "${DB_PORT:-3306}:3306"
-    env_file: ./.env
+
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_USER=${DB_USER}
